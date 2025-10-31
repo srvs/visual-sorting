@@ -12,6 +12,11 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
+    - id: install
+      uses: kirkeaton/setup-react@v2
+      with:
+        react-version: '19.2.0'
+        react-dom-version: '19.2.0'
     - id: build-publish
       uses: bitovi/github-actions-react-to-github-pages@v1.2.4
       with:
