@@ -12,6 +12,8 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
+    - run: pwd
+    - run: ls -al
     - run: node --version
     - run: npm --version
     - run: npm install gh-pages --save-dev
