@@ -12,6 +12,7 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
+    - run: npm install
     - id: install
       uses: kirkeaton/setup-react@v2
       with:
