@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "react-scripts": "5.0.0",
+    "typescript": "^4.5.4",
     "react": "^19.2.0",
     "react-dom": "^19.2.0"
   },
