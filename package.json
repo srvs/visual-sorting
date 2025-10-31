@@ -2,7 +2,7 @@
   "name": "sorting-algorithm-visualizer",
   "private": true,
   "version": "0.0.0",
-  "homepage": ".",
+  "homepage": "https://srvs.github.io/visual-sorting/",
   "type": "module",
   "scripts": {
     "dev": "vite",
