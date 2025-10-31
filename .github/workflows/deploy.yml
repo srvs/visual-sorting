@@ -14,10 +14,10 @@ jobs:
     steps:
     - run: pwd
     - run: ls -al
-    - run: cd ../
+    - uses: ./
     - run: pwd
     - run: ls -al
-    - run: cd /home/
+    - uses: ./visual-sorting
     - run: pwd
     - run: ls -al
     - run: node --version
