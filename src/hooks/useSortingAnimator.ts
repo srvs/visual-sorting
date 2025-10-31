@@ -25,11 +25,13 @@ export const useSortingAnimator = (initialArray: number[]) => {
   const animationSteps = useRef<AnimationStep[]>([]);
   const timeoutRef = useRef<number | null>(null);
 
+  const isFinished = !isSorting && currentStep > 0 && currentStep >= animationSteps.current.length;
+
   const displayedState = animationSteps.current[currentStep] || {
     array: array,
     comparing: [],
     swapping: [],
-    sorted: [],
+    sorted: isFinished ? array.map((_, i) => i) : [],
   };
   
   const totalSteps = animationSteps.current.length;
@@ -53,10 +55,16 @@ export const useSortingAnimator = (initialArray: number[]) => {
   // This useEffect handles the actual animation loop
   useEffect(() => {
     // Conditions to stop the loop
-    if (!isSorting || isPaused || currentStep >= animationSteps.current.length) {
-      if (isSorting && !isPaused && currentStep >= animationSteps.current.length) {
-        setIsSorting(false); // Animation finished
+    if (!isSorting || isPaused) {
+      return;
+    }
+
+    if (currentStep >= animationSteps.current.length) {
+      const finalStep = animationSteps.current[animationSteps.current.length - 1];
+      if (finalStep) {
+        setArray(finalStep.array);
       }
+      setIsSorting(false); // Animation finished
       return;
     }
 

@@ -24,5 +24,5 @@ export const DEFAULT_SPEED = 50; // actions per second
 export const MIN_SPEED = 1;
 export const MAX_SPEED = 200;
 
-export const MIN_VALUE = 5;
-export const MAX_VALUE = 100;
+export const MIN_VALUE = -65536;
+export const MAX_VALUE = 65535;

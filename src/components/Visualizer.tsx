@@ -21,7 +21,19 @@ const Visualizer: React.FC<VisualizerProps> = ({ array, comparing, swapping, sor
     return 'bg-indigo-500';
   };
 
-  const maxValue = Math.max(1, ...array);
+  const minValue = array.length > 0 ? Math.min(...array) : 0;
+  const maxValue = array.length > 0 ? Math.max(...array) : 0;
+  const range = maxValue - minValue;
+
+  const getBarHeight = (value: number) => {
+    if (range === 0) {
+      return 50;
+    }
+    const normalizedValue = value - minValue;
+    // Ensure even the smallest value is visible
+    const height = Math.max(0.5, (normalizedValue / range) * 100);
+    return height;
+  };
 
   return (
     <div className="w-full h-full flex items-end justify-center gap-px p-4 bg-gray-800 rounded-lg shadow-inner border-b-2 border-gray-600">
@@ -42,7 +54,7 @@ const Visualizer: React.FC<VisualizerProps> = ({ array, comparing, swapping, sor
             title={`Value: ${value}`} // Fallback native tooltip
             className={`w-full rounded-t-sm transition-colors duration-150 ${getBarColorClass(index)}`}
             style={{ 
-              height: `${(value / maxValue) * 100}%`,
+              height: `${getBarHeight(value)}%`,
             }}
           />
         </div>

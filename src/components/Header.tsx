@@ -145,7 +145,7 @@ const Header: React.FC<HeaderProps> = ({
       {selectedArrayGenerationType === ArrayGenerationType.Custom && (
         <div className="flex flex-col mt-2">
             <label htmlFor="custom-array-input" className="text-sm font-medium text-gray-400 mb-1">
-                Custom Array (comma-separated integers from 5 to 100)
+                Custom Array (comma-separated integers from -65536 to 65535)
             </label>
             <textarea
                 id="custom-array-input"
