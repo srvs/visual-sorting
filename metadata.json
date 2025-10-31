@@ -1,0 +1,5 @@
+{
+  "name": "Sorting Algorithm Visualizer",
+  "description": "An interactive web application to visualize various sorting algorithms like Bubble Sort, Merge Sort, Quick Sort, and Selection Sort. Users can generate random arrays, select an algorithm, and watch the sorting process in action with adjustable animation speed.",
+  "requestFramePermissions": []
+}
