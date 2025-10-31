@@ -21,42 +21,55 @@ const Visualizer: React.FC<VisualizerProps> = ({ array, comparing, swapping, sor
     return 'bg-indigo-500';
   };
 
-  const minValue = array.length > 0 ? Math.min(...array) : 0;
-  const maxValue = array.length > 0 ? Math.max(...array) : 0;
-  const range = maxValue - minValue;
+  // Find the maximum absolute value to scale bars correctly.
+  // Use Math.max(1, ...) to avoid division by zero if all values are 0.
+  const maxAbsValue = array.length > 0 ? Math.max(1, ...array.map(v => Math.abs(v))) : 1;
 
-  const getBarHeight = (value: number) => {
-    if (range === 0) {
-      return 50;
+  const getBarStyle = (value: number) => {
+    const heightPercentage = (Math.abs(value) / maxAbsValue) * 50;
+    
+    // Ensure a minimum visible height for non-zero values
+    const finalHeight = value !== 0 ? Math.max(0.5, heightPercentage) : 0;
+
+    if (value >= 0) {
+      return {
+        height: `${finalHeight}%`,
+        bottom: '50%',
+        borderRadius: '0.125rem 0.125rem 0 0', // rounded-t-sm
+      };
+    } else {
+      return {
+        height: `${finalHeight}%`,
+        top: '50%',
+        borderRadius: '0 0 0.125rem 0.125rem', // rounded-b-sm
+      };
     }
-    const normalizedValue = value - minValue;
-    // Ensure even the smallest value is visible
-    const height = Math.max(0.5, (normalizedValue / range) * 100);
-    return height;
   };
 
   return (
-    <div className="w-full h-full flex items-end justify-center gap-px p-4 bg-gray-800 rounded-lg shadow-inner border-b-2 border-gray-600">
+    <div className="w-full h-full flex items-center justify-center gap-px p-4 bg-gray-800 rounded-lg shadow-lg relative">
+      {/* Zero Axis Line */}
+      <div className="absolute top-1/2 left-4 right-4 h-px bg-gray-600 z-0"></div>
+
       {array.map((value, index) => (
-        <div key={index} className="relative group w-full h-full flex items-end">
-          {/* Custom Tooltip */}
-          <div 
-            className="absolute bottom-full mb-2 w-max left-1/2 -translate-x-1/2 px-2 py-1 bg-gray-900 text-white text-xs rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-20" 
-            role="tooltip"
-          >
-            {value}
-            {/* Tooltip Arrow */}
-            <div className="absolute left-1/2 -translate-x-1/2 top-full w-0 h-0 border-x-4 border-x-transparent border-t-4 border-t-gray-900"></div>
-          </div>
-          
-          {/* The Bar */}
+        // Each of these divs is a flex item, representing a column for a bar.
+        <div key={index} className="w-full h-full relative">
+          {/* This div is the bar itself, absolutely positioned within its column. It's also the tooltip group. */}
           <div
-            title={`Value: ${value}`} // Fallback native tooltip
-            className={`w-full rounded-t-sm transition-colors duration-150 ${getBarColorClass(index)}`}
-            style={{ 
-              height: `${getBarHeight(value)}%`,
-            }}
-          />
+            title={`Value: ${value}`}
+            className={`absolute w-full transition-colors duration-150 group ${getBarColorClass(index)}`}
+            style={getBarStyle(value)}
+          >
+            {/* Custom Tooltip */}
+            <div 
+              className={`absolute w-max left-1/2 -translate-x-1/2 px-2 py-1 bg-gray-900 text-white text-xs rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-20 ${ value >= 0 ? 'bottom-full mb-2' : 'top-full mt-2'}`} 
+              role="tooltip"
+            >
+              {value}
+              {/* Tooltip Arrow */}
+              <div className={`absolute left-1/2 -translate-x-1/2 w-0 h-0 border-x-4 border-x-transparent ${ value >= 0 ? 'top-full border-t-4 border-t-gray-900' : 'bottom-full border-b-4 border-b-gray-900'}`}></div>
+            </div>
+          </div>
         </div>
       ))}
     </div>
