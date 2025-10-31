@@ -15,6 +15,13 @@ jobs:
     - run: pwd
     - run: ls -al
     - run: cd ..
+    - run: pwd
+    - run: ls -al
+    - run: cd ..
+    - run: pwd
+    - run: ls -al
+    - run: cd ..
+    - run: pwd
     - run: ls -al
     - run: node --version
     - run: npm --version
